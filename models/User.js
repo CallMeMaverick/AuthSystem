@@ -7,8 +7,7 @@ const UserSchema = new Schema({
     password: { type: String, required: true },
 });
 
-// Pre-save middleware to hash the password before saving the document
-UserSchema.pre("save", async (req, res, next) => {
+UserSchema.pre("save", async function (next) {
     // Check if the password is being modified or if the document is new
     if (this.isModified("password") || this.isNew) {
         // Hash the password with bcrypt and assign it to the password field
@@ -18,6 +17,7 @@ UserSchema.pre("save", async (req, res, next) => {
     // Proceed to next middleware
     next();
 });
+
 
 // Instance method to compare candidate's password with hashed password
 UserSchema.methods.comparePasswords = function (candidatePassword) {
