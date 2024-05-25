@@ -4,8 +4,11 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const router = require('./routes');
+const connectDB = require("./config/database");
+require("dotenv").config();
 
 const app = express();
+connectDB(process.env.MONGO_STRING);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
