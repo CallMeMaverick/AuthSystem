@@ -3,7 +3,7 @@ const User = require("../models/User");
 
 module.exports = function (passport) {
     // Configuring the local strategy to handle authentication
-    passport.use(new LocalStrategy({ usernameField: email }, async (email, password, done) => {
+    passport.use(new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
         try {
             // Finding the user by id
             const user = await User.findOne({ email });
