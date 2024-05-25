@@ -3,8 +3,11 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport = require("passport");
 const router = require('./routes');
+const session = require("express-session");
 const connectDB = require("./config/database");
+require("./config/passport-config")(passport)
 require("dotenv").config();
 
 const app = express();
@@ -20,7 +23,22 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Set up express session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(router);
+
+app.get('/', (req, res, next) => {
+  res.render("index", { title: "Great" })
+})
 
 
 // catch 404 and forward to error handler
