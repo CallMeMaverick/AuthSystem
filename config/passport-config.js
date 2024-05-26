@@ -33,12 +33,13 @@ module.exports = function(passport) {
             // provide GOOGLE_CLIENT_SECRET
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             // specify callback
-            callbackURL: "http://localhost:5001/auth/google/callback"
+            callbackURL: "https://auth-system-maverick-df7b9ab09da7.herokuapp.com/auth/google/callback"
         },
         async (token, tokenSecret, profile, done) => {
             console.log("Google profile:", profile);
             try {
                 let user = await User.findOne({ googleId: profile.id });
+
                 if (!user) {
                     user = new User({
                         googleId: profile.id,
@@ -58,7 +59,7 @@ module.exports = function(passport) {
     passport.use(new GitHubStrategy({
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: "http://localhost:5001/auth/github/callback",
+            callbackURL: "https://auth-system-maverick-df7b9ab09da7.herokuapp.com/auth/github/callback",
             scope: ['user:email'] // Requesting email scope
         },
         async (accessToken, refreshToken, profile, done) => {
@@ -96,6 +97,7 @@ module.exports = function(passport) {
         done(null, user.id);
     });
 
+    // req.session.passport.user -> req.session.user
     passport.deserializeUser(async (id, done) => {
         try {
             const user = await User.findById(id);
