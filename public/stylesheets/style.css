@@ -33,9 +33,9 @@ h1 {
     border-top-right-radius: 8px;
 }
 
-span {
+#message {
     font-size: 15px;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 #authForm {
@@ -89,3 +89,30 @@ a {
 a:hover {
     color: royalblue;
 }
+
+.google-auth-wrapper {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.google-auth-container:hover {
+    background-color: rgba(245, 245, 245, 0.32);
+}
+
+.google-auth-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background-color: rgba(245, 245, 245, 0.77);
+    border-radius: 5px;
+    border: 1px solid grey;
+}
+
+.google-auth-container p {
+    color: black; !important;
+    font-size: 18px;
+}
+
