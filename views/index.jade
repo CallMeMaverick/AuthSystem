@@ -1,0 +1,30 @@
+extends layout
+
+block content
+    if errorMessage
+        p(style="color: red;") #{errorMessage}
+    if successMessage
+        p(style="color: green;") #{successMessage}
+    if logoutMessage
+        p(style="color: blue;") #{logoutMessage}
+
+    div#message
+        span
+            | Don't have an account?
+            a(href="/signup", id="toggleSignUp") Sign up
+
+    form#authForm(method="POST", action="/signin")
+        div.form-email
+            label(for="email") Email:
+            input(type="email", id="email", name="email", placeholder="example@example.com", required)
+
+        div.form-password
+            label(for="password") Password:
+            input(type="password", id="password", name="password", placeholder="securePassword@", required)
+
+        button(type="submit") Sign in
+
+
+
+                    
+

@@ -3,9 +3,12 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport = require('passport');
+const session = require('express-session');
+const connectDB = require('./config/database');
 const router = require('./routes');
-const connectDB = require("./config/database");
-require("dotenv").config();
+require('./config/passport-config')(passport); // Ensure this initializes Passport config
+require('dotenv').config();
 
 const app = express();
 connectDB(process.env.MONGO_STRING);
@@ -20,22 +23,44 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Set up express session
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false
+}));
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(router);
 
+app.get('/', (req, res) => {
+  res.redirect('/signin');
+});
+app.get('/signin', (req, res) => {
+  const logoutMessage = req.query.logout ? "Logged out successfully" : null;
+  res.render('index', { title: 'Sign In', logoutMessage });
+});
+app.get('/signup', (req, res) => {
+  res.render('signup', { title: 'Sign Up' });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 // error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+app.use(function(err, req, res) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('signup', { title: 'Error', errorMessage: err.message });
 });
 
 module.exports = app;
+

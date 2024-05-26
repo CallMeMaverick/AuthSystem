@@ -1,1 +1,91 @@
+* {
+    font-family: "Nunito Sans", sans-serif;
+}
 
+body, .content, .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    margin: 0;
+}
+
+.form {
+    width: 400px;
+    border-radius: 8px;
+    background-color: white;
+    padding: 20px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-left: 10px;
+}
+
+.heading {
+    color: white;
+    background-color: cornflowerblue;
+    text-align: left;
+    width: 100%;
+    padding: 10px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+span {
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+#authForm {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+#authForm > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+label {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+label, input, button {
+    font-size: 20px;
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: cornflowerblue;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: royalblue;
+}
+
+a {
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+a:hover {
+    color: royalblue;
+}
