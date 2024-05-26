@@ -9,4 +9,6 @@ router.post("/signin", userController.signIn);
 // Protected route
 router.get('/protected', ensureAuthenticated, userController.protected);
 
+router.get('/logout', userController.logOut);
+
 module.exports = router;

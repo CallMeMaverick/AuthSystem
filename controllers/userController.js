@@ -66,3 +66,13 @@ exports.signIn = (req, res, next) => {
 exports.protected = (req, res, next) => {
     res.render("protected");
 }
+
+exports.logOut = (req, res, next) => {
+    req.logout((err) => {
+        if (err) {
+            done(err);
+        }
+
+        res.redirect("/signin?logout=true");
+    })
+}
