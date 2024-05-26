@@ -39,3 +39,30 @@ exports.signUp = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.signIn = (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) {
+            return next(err);
+        }
+
+        if (!user) {
+            return res.render("index", {
+                title: "Sign In",
+                errorMessage: info.message
+            })
+        }
+
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+
+            res.redirect("protected")
+        })
+    })(req, res, next);
+}
+
+exports.protected = (req, res, next) => {
+    res.render("protected");
+}
