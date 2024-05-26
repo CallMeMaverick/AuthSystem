@@ -4,8 +4,9 @@ const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
     email: { type: String, required: true },
-    password: { type: String, required: function() { return !this.googleId; } },
+    password: { type: String, required: function() { return !this.googleId && !this.githubId; } },
     googleId: { type: String },
+    githubId: { type: String }
 });
 
 UserSchema.pre("save", async function (next) {
