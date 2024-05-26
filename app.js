@@ -62,5 +62,10 @@ app.use(function(err, req, res) {
   res.render('signup', { title: 'Error', errorMessage: err.message });
 });
 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
 module.exports = app;
 
