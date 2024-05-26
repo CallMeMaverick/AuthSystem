@@ -1,5 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const GitHubStrategy = require("passport-github2");
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 require("dotenv").config()
@@ -52,6 +53,44 @@ module.exports = function(passport) {
             }
         }
     ));
+
+    // Configure GithubStrategy
+    passport.use(new GitHubStrategy({
+            clientID: process.env.GITHUB_CLIENT_ID,
+            clientSecret: process.env.GITHUB_CLIENT_SECRET,
+            callbackURL: "http://localhost:5001/auth/github/callback",
+            scope: ['user:email'] // Requesting email scope
+        },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                // Find user by GitHub ID
+                let user = await User.findOne({ githubId: profile.id });
+
+                if (!user) {
+                    // Fetch user's emails
+                    const emails = await fetch('https://api.github.com/user/emails', {
+                        headers: {
+                            'Authorization': `token ${accessToken}`,
+                            'User-Agent': 'your-app-name'
+                        }
+                    }).then(res => res.json());
+
+                    // Find primary email or fallback to first email in list
+                    const primaryEmail = emails.find(email => email.primary && email.verified) || emails[0];
+
+                    user = new User({
+                        githubId: profile.id,
+                        email: primaryEmail ? primaryEmail.email : null,
+                    });
+
+                    await user.save();
+                }
+                return done(null, user);
+            } catch (err) {
+                return done(err, false);
+            }
+        }));
+
 
     passport.serializeUser((user, done) => {
         done(null, user.id);
