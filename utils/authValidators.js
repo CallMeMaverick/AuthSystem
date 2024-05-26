@@ -4,8 +4,8 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-    // Regex to check for at least 8 characters, at least one letter, and at least one special character
-    const regex = /^(?=.*[A-Za-z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$/;
+    // Regex to check for at least 8 characters, and at least one special character
+    const regex = /^(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     return regex.test(password.toLowerCase());
 }
 
